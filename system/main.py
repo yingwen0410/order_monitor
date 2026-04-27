@@ -35,14 +35,8 @@ def _load_allow_lookup(path: str) -> dict:
     但 pandas 讀取時只拿到純數字。因此改用 openpyxl 直接讀取，
     同時檢查 number_format 來還原 R 後綴。
     """
-    import win32com.client
-
-    if not path or not os.path.exists(path):
-        logging.warning("未提供生產計畫表或檔案不存在 (%s)，最大安基量欄位將留空", path)
-        return {}
-
-    logging.info("載入允備貨清單：%s", path)
     try:
+        import win32com.client
         # 使用 Excel COM 介面直接讀取「顯示文字」，
         # 這樣不管儲存格用什麼格式（"R"、"PCS"、"M"…），都能完整還原。
         excel = win32com.client.Dispatch("Excel.Application")
