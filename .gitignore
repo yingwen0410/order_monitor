@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environment and Portable Python
+system/.venv/
+system/python_portable/
+
+# Build and Dist
+system/build/
+system/dist/
+*.spec
+
+# Credentials and sensitive config
+system/credentials.py
+system/paths.json
+*.log
+
+# Company Data / Documents
+*.xlsx
+*.xlsm
+*.xls
+*.docx
+*.doc
+
+# Claude / AI related
+.claude/
+.antigravity/
+*CLAUDE*
+
