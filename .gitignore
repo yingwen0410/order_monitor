@@ -9,9 +9,11 @@ system/.venv/
 system/python_portable/
 
 # Build and Dist
+build/
+dist/
 system/build/
 system/dist/
-*.spec
+system/.venv-build/
 
 # Credentials and sensitive config
 system/credentials.py
@@ -28,5 +30,7 @@ system/paths.json
 # Claude / AI related
 .claude/
 .antigravity/
+.sixth/
+.claude/settings.local.json
 *CLAUDE*
 
