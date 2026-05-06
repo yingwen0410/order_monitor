@@ -34,4 +34,4 @@ Write-Host "Installing required packages..."
 & "$PORTABLE_DIR\python.exe" -m pip install pandas==2.2.2 openpyxl==3.1.2 pyodbc==5.2.0 tkinterdnd2 pywin32 --no-warn-script-location
 
 Remove-Item "$PORTABLE_DIR\get-pip.py"
-Write-Host "Done! Portable Python is ready at .\python_portable"
+Write-Host "Done! python_portable is ready at .\python_portable"

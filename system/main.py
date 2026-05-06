@@ -17,13 +17,28 @@ main.py — 訂單未交量報表產生器的主程式進入點。
 import logging
 import os
 import sys
-from datetime import date
 
-import utils
-import reader
-import erp
-import writer
-import ui
+
+def _show_splash():
+    """在重量級模組載入前顯示啟動畫面，讓使用者立刻知道程式已被點擊。"""
+    import tkinter as tk
+    splash = tk.Tk()
+    splash.overrideredirect(True)
+    splash.configure(bg="#34495E")
+    w, h = 320, 90
+    splash.update_idletasks()
+    x = (splash.winfo_screenwidth() - w) // 2
+    y = (splash.winfo_screenheight() - h) // 2
+    splash.geometry(f"{w}x{h}+{x}+{y}")
+    splash.attributes("-topmost", True)
+    tk.Label(splash, text="訂單未交量報表產生器",
+             bg="#34495E", fg="white",
+             font=("Microsoft JhengHei", 13, "bold")).pack(pady=(18, 5))
+    tk.Label(splash, text="正在啟動中，請稍候…",
+             bg="#34495E", fg="#A8BFC9",
+             font=("Microsoft JhengHei", 10)).pack()
+    splash.update()
+    return splash
 
 
 def _load_allow_lookup(path: str) -> dict:
@@ -49,7 +64,7 @@ def _load_allow_lookup(path: str) -> dict:
             if s.Name == "允備貨清單":
                 ws = s
                 break
-        
+
         if ws is None:
             logging.warning("找不到「允備貨清單」工作表")
             wb.Close(False)
@@ -93,6 +108,17 @@ def _load_allow_lookup(path: str) -> dict:
 
 
 def main():
+    # 立即顯示啟動畫面（在重量級模組載入之前）
+    splash = _show_splash()
+
+    # 延遲載入重量級模組，讓啟動畫面先顯示
+    from datetime import date
+    import utils
+    import reader
+    import erp
+    import writer
+    import ui
+
     # ── 初始化 Logging ──
     utils.setup_logging()
 
@@ -100,6 +126,7 @@ def main():
     try:
         cfg = utils.load_config()
     except FileNotFoundError as e:
+        splash.destroy()
         ui.show_error("設定檔錯誤", str(e))
         sys.exit(1)
 
@@ -218,7 +245,8 @@ def main():
             except Exception as e:
                 logging.warning("無法自動開啟報表：%s", e)
 
-    # ── 開啟啟動視窗，等待使用者操作 ──
+    # ── 關閉啟動畫面，開啟主視窗 ──
+    splash.destroy()
     ui.show_startup_dialog(default_company, default_excel, default_plan,
                            default_output, execute_callback)
 
